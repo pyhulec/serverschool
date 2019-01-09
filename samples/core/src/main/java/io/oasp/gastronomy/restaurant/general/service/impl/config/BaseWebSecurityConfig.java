@@ -19,7 +19,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import io.oasp.gastronomy.restaurant.general.common.impl.security.CsrfRequestMatcher;
 import io.oasp.module.security.common.impl.rest.AuthenticationSuccessHandlerSendingOkHttpStatusCode;
 import io.oasp.module.security.common.impl.rest.JsonUsernamePasswordAuthenticationFilter;
 import io.oasp.module.security.common.impl.rest.LogoutSuccessHandlerReturningOkHttpStatusCode;
@@ -72,7 +71,7 @@ public abstract class BaseWebSecurityConfig extends WebSecurityConfigurerAdapter
         .authorizeRequests().antMatchers(unsecuredResources).permitAll().anyRequest().authenticated().and()
 
         // activate crsf check for a selection of urls (but not for login & logout)
-        //.csrf().requireCsrfProtectionMatcher(new CsrfRequestMatcher()).and()
+        // .csrf().requireCsrfProtectionMatcher(new CsrfRequestMatcher()).and()
         .csrf().disable()
 
         // add basic htp autentication
@@ -84,6 +83,9 @@ public abstract class BaseWebSecurityConfig extends WebSecurityConfigurerAdapter
         .passwordParameter("password").and()
         // logout via POST is possible
         .logout().logoutSuccessUrl("/login.html").and()
+
+        // training scenario thing
+        .headers().frameOptions().sameOrigin().and()
 
         // register login and logout filter that handles rest logins
         .addFilterAfter(getSimpleRestAuthenticationFilter(), BasicAuthenticationFilter.class)
