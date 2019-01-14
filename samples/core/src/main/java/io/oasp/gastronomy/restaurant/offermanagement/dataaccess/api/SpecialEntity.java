@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import io.oasp.gastronomy.restaurant.general.common.api.datatype.Money;
@@ -30,11 +31,8 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
   @Embedded
   private TimeFrameEmbedded timeFrame;
 
-  @ManyToOne
-  @JoinColumn(name = "offerId")
   private OfferEntity offer;
 
-  @Column
   private Money specialPrice;
 
   @Column
@@ -58,13 +56,16 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
     this.timeFrame = timeFrame;
   }
 
-  // /**
-  // * @return offer
-  // */
-  // public Long getOfferId() {
-  //
-  // return this.offer.getId();
-  // }
+  @Override
+  @Transient
+  public Long getOfferId() {
+
+    if (this.offer == null) {
+      return null;
+    }
+
+    return this.offer.getId();
+  }
 
   /**
    * @param offer new value of {@link #getOffer}.
@@ -106,15 +107,24 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
     this.name = name;
   }
 
-  // public OfferEntity getOffer() {
-  //
-  // return this.offer;
-  // }
+  @ManyToOne
+  @JoinColumn(name = "offerId")
+  public OfferEntity getOffer() {
 
-  // @Override
-  // public void setOfferId(Long offerId) {
-  //
-  // this.offer.setId(offerId);
-  // }
+    return this.offer;
+  }
+
+  public void setOfferId(Long id) {
+
+    if (id == null) {
+      this.offer = null;
+    } else {
+      OfferEntity offerEntity = new OfferEntity();
+      offerEntity.setId(id);
+      this.offer = offerEntity;
+    }
+
+    setOfferId(id);
+  }
 
 }

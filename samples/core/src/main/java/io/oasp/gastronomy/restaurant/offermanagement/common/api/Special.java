@@ -30,9 +30,9 @@ public interface Special extends ApplicationEntity {
    */
   String getName();
 
-  // Long getOfferId();
-  //
-  // void setOfferId(Long offerId);
+  Long getOfferId();
+
+  void setOfferId(Long offerId);
 
   Money getSpecialPrice();
 

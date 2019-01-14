@@ -6,13 +6,14 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import io.oasp.gastronomy.restaurant.offermanagement.common.api.TimeFrame;
+
 /**
  * @author MWYPYCH
  *
  */
 @Embeddable
-public class TimeFrameEmbedded {
-  // implements TimeFrame {
+public class TimeFrameEmbedded implements TimeFrame {
 
   private DayOfWeek startDay;
 
